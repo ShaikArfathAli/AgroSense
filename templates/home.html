@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AgroSense - Agricultural Decision Support</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <!-- Header -->
+  <header class="navbar">
+    <div class="logo">AgroSense</div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('crop') }}">Crop Recommendation</a></li>
+        <li><a href="{{ url_for('fertilizer') }}">Fertilizer Suggestion</a></li>
+        <li><a href="{{ url_for('disease') }}">Plant Disease Detection</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h1>AgroSense</h1>
+      <h2>Agricultural Decision Support System</h2>
+      <p>Empowering farmers with AI-driven insights for smarter agriculture.</p>
+      <p>Harness the power of AI to revolutionize farming. AgroSense delivers intelligent crop recommendations, precise fertilizer suggestions, and early disease detection to help farmers make data-driven, sustainable decisions.</p>
+      <a href="{{ url_for('features') }}#features" class="btn">Explore Features</a>
+      <a href="{{ url_for('about') }}" style="margin-left: 20px;" class="btn">Explore Crops</a>
+    </div> 
+  </section>
+</body>
+</html>

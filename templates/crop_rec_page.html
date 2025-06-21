@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crop Recommendation</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background-image: url("{{ url_for('static', filename='images/crop_rec_page.avif') }}");
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+      color: white;
+    }
+    .overlay-card {
+      background-color: rgba(12, 118, 42, 0.947);
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: 40px auto;
+    }
+    h2 {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .btn {
+      margin-top: 10px;
+      background-color: #2015ee;
+      border: none;
+      padding: 10px 20px;
+      font-size: large;
+      border-radius: 5px;
+      color: white;
+    }
+    .btn:hover {
+      background-color: #2015ee;
+      color: white;
+    }
+    .btn-home {
+    display: inline-block;
+    background-color: #0d6efd;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-home:hover {
+    background-color: #084298;
+    color: white;
+    text-decoration: none;
+  }
+  </style>
+</head>
+<body>
+  <h2>Crop Recommendation</h2>
+  <div class="overlay-card">
+    <h4 class="text-center mb-4">Crop Growing Conditions</h4>
+    <form method="POST" action="{{ url_for('crop') }}">
+      <div class="mb-3"><input type="number" class="form-control" name="nitrogen" placeholder="Nitrogen" required value="{{ N or '' }}"></div>
+      <div class="mb-3"><input type="number" class="form-control" name="phosphorous" placeholder="Phosphorous" required value="{{ P or '' }}"></div>
+      <div class="mb-3"><input type="number" class="form-control" name="potassium" placeholder="Potassium" required value="{{ K or '' }}"></div>
+      <div class="mb-3"><input type="number" class="form-control" name="temperature" placeholder="Temperature (°C)" required value="{{ temp or '' }}"></div>
+      <div class="mb-3"><input type="number" class="form-control" name="humidity" placeholder="Humidity (%)" required value="{{ humidity or '' }}"></div>
+      <div class="mb-3"><input type="number" class="form-control" name="ph" placeholder="pH" required value="{{ ph or '' }}"></div>
+      <div class="mb-3"><input type="number" class="form-control" name="rainfall" placeholder="Rainfall (mm)" required value="{{ rainfall or '' }}"></div>
+      <div class="mb-3 text-center">
+        <button type="submit" class="btn">Submit</button>
+      </div>
+    </form>
+   
+        
+      
+    {% if prediction %}
+      <div class="alert alert-success text-center mt-3" role="alert">
+        Recommended Crop: <strong>{{ prediction }}</strong>
+      </div>
+    {% elif error %}
+      <div class="alert alert-danger text-center mt-3" role="alert">
+        Error: {{ error }}
+      </div>
+    {% endif %}
+    <div class="text-center mt-4">
+      <a href="{{ url_for('home') }}" class="btn-home">Back to Home Page</a>
+    </div>
+  </div>
+</body>
+</html>

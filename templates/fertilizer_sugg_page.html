@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fertilizer Suggestion</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background-image: url("{{ url_for('static', filename='images/fertilizer_page.avif') }}");
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+      color: white;
+    }
+
+    .overlay-card {
+      background-color: rgba(12, 118, 42, 0.947);
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 90%;
+      margin: 40px auto 20px auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .btn {
+      margin-top: 10px;
+      background-color: #2015ee;
+      border: none;
+      padding: 10px 20px;
+      font-size: large;
+      border-radius: 5px;
+      color: white;
+    }
+
+    .btn:hover {
+      background-color: #2015ee;
+      color: white;
+    }
+
+    .btn-home {
+      display: inline-block;
+      background-color: #0d6efd;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-home:hover {
+      background-color: #084298;
+      color: white;
+      text-decoration: none;
+    }
+
+    .result-box {
+      background-color: black;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 0 auto 40px auto;
+      max-width: 1200px;
+      font-size: 1.2rem;
+      word-wrap: break-word;
+      white-space: normal;
+    }
+  </style>
+</head>
+<body>
+  <h2>Fertilizer Suggestion</h2>
+  <div class="overlay-card">
+    <h4 class="text-center mb-4">Fertilizer</h4>
+    <form method="POST" action="{{ url_for('fertilizer') }}">
+      <div class="mb-3">
+        <input type="text" class="form-control" name="cropname" placeholder="Crop Name" required value="{{ cropname or '' }}">
+      </div>
+      <div class="mb-3">
+        <input type="number" class="form-control" name="nitrogen" placeholder="Nitrogen" required value="{{ nitrogen or '' }}">
+      </div>
+      <div class="mb-3">
+        <input type="number" class="form-control" name="phosphorous" placeholder="Phosphorous" required value="{{ phosphorous or '' }}">
+      </div>
+      <div class="mb-3">
+        <input type="number" class="form-control" name="potassium" placeholder="Potassium" required value="{{ potassium or '' }}">
+      </div>
+      <div class="mb-3 text-center">
+        <button type="submit" class="btn">Submit</button>
+      </div>
+    </form>
+
+    {% if error %}
+      <div class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+    {% endif %}
+
+    <div class="text-center mt-4">
+      <a href="{{ url_for('home') }}" class="btn-home">Back to Home Page</a>
+    </div>
+  </div>
+
+  {% if result %}
+    <div class="result-box text-center">
+      Suggested Fertilizer: {{ result }}
+    </div>
+  {% endif %}
+</body>
+</html>

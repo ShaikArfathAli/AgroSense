@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Know More About Indian Crops</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            transition: background-image 0.5s ease;
+            color: #fff;
+            text-align: center;
+            background-color: #111;
+        }
+
+        h1 {
+            margin: 15px 0;
+        }
+
+        #grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .crop-card {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .crop-card:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.2);
+        }
+
+        .crop-card img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        #crop-info {
+            width: 100%;
+            min-height: 150px;
+            margin-top: 10px;
+            padding:5px;
+            background: rgba(0,0,0,0.6);
+        }
+        .btn-home {
+            display: inline-block;
+            background-color: #0d6efd;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-home:hover {
+            background-color: #084298;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Know More About the Indian Crops</h1>
+    <a href="{{ url_for('home') }}" class="btn-home">Go Back to Home</a>
+    <div id="grid-container"></div>
+
+    <div id="crop-info">
+        <h2 id="crop-name">Click on a crop to learn more</h2>
+        
+        <p id="crop-description"></p>
+    </div>
+
+    <script>
+        const crops = {
+            'rice': 1, 'maize': 2, 'chickpea': 3, 'kidneybeans': 4, 'pigeonpeas': 5,
+            'mothbeans': 6, 'mungbean': 7, 'blackgram': 8, 'lentil': 9,
+            'pomegranate': 10, 'banana': 11, 'mango': 12, 'grapes': 13,
+            'watermelon': 14, 'muskmelon': 15, 'apple': 16, 'orange': 17,
+            'papaya': 18, 'coconut': 19, 'cotton': 20, 'jute': 21, 'coffee': 22
+        };
+
+        const cropDescriptions = {
+                rice: `Rice is a staple food for more than half of India's population. It thrives in high rainfall regions with standing water. 
+            India is one of the largest producers and exporters of rice in the world. There are two major types: basmati and non-basmati. 
+            It is mainly grown in states like West Bengal, Punjab, and Uttar Pradesh.`,
+
+                maize: `Maize is a versatile crop used for food, fodder, and industrial purposes. It grows well in both kharif and rabi seasons. 
+            It is rich in carbohydrates and is also used for biofuel. Major maize-growing states include Karnataka, Madhya Pradesh, and Bihar. 
+            Maize is also processed into cornflakes and popcorn.`,
+
+                chickpea: `Chickpea, also known as gram, is a key rabi pulse crop in India. It is a rich source of protein and dietary fiber. 
+            It helps in enriching soil fertility through nitrogen fixation. Chickpea is primarily grown in Madhya Pradesh, Rajasthan, and Maharashtra. 
+            It is used in dishes like chole and is ground into besan (gram flour).`,
+
+                kidneybeans: `Kidney beans, commonly called rajma, are popular in North Indian cuisine. They are rich in protein, iron, and dietary fiber. 
+            Kidney beans require well-drained loamy soil for optimal growth. They are mainly cultivated in Jammu & Kashmir, Himachal Pradesh, and Uttarakhand. 
+            Rajma chawal is a staple dish made with these beans.`,
+
+                pigeonpeas: `Pigeon peas, or arhar/tur dal, are a vital pulse crop in India. They are drought-tolerant and can grow in semi-arid conditions. 
+            They are a major source of protein in vegetarian diets. Used in everyday meals as dal, especially in southern and central India. 
+            Maharashtra, Uttar Pradesh, and Karnataka are key producers.`,
+
+                mothbeans: `Moth beans are hardy, drought-resistant crops grown in arid regions. They are rich in protein and consumed as whole or split dals. 
+            Moth beans require minimal water and grow in sandy soil. Rajasthan is the major producer of this crop in India. 
+            It is also used in preparing snacks like matki usal.`,
+
+                mungbean: `Mungbean, or green gram, is a highly nutritious pulse. It is quick-growing and often used in crop rotation systems. 
+            It is a great source of plant-based protein and antioxidants. Mungbean sprouts are consumed raw in salads or cooked. 
+            It is grown mostly in Maharashtra, Andhra Pradesh, and Rajasthan.`,
+
+                blackgram: `Black gram, also known as urad dal, is a key legume in India. It is used in making popular dishes like idli and dosa batter. 
+            This crop improves soil health through nitrogen fixation. It is commonly cultivated in Tamil Nadu, Andhra Pradesh, and Maharashtra. 
+            Black gram is rich in protein and iron.`,
+
+                lentil: `Lentils are important winter pulse crops grown in northern India. They are rich in iron, fiber, and protein, making them nutritious. 
+            Lentils grow best in cool, temperate climates with dry weather. Used in a variety of Indian dals and soups. 
+            Major producing states include Madhya Pradesh and Uttar Pradesh.`,
+
+                pomegranate: `Pomegranate is a drought-resistant fruit rich in antioxidants. It grows best in semi-arid and arid regions. 
+            The fruit is consumed fresh or as juice and is exported globally. Maharashtra is the leading producer of pomegranate in India. 
+            It helps in improving heart health and immunity.`,
+
+                banana: `Bananas are tropical fruits available throughout the year in India. They are rich in potassium, vitamin B6, and fiber. 
+            Banana plants require warm, humid climates and rich soil. Tamil Nadu, Maharashtra, and Kerala are top banana-growing states. 
+            The fruit is consumed raw or used in cooking and desserts.`,
+
+                mango: `Mango, the national fruit of India, is loved for its sweetness. It grows in tropical regions and requires a hot, dry season to flower. 
+            There are many varieties like Alphonso, Dasheri, and Kesar. Uttar Pradesh, Maharashtra, and Andhra Pradesh are top producers. 
+            Mangoes are eaten raw, pickled, or juiced.`,
+
+                grapes: `Grapes are cultivated mainly in Maharashtra and Karnataka. They are grown on vines and need moderate temperatures. 
+            Used for fresh eating, raisin making, and wine production. India is a major exporter of fresh table grapes. 
+            Grapes are rich in antioxidants and support heart health.`,
+
+                watermelon: `Watermelon is a summer fruit known for its high water content. It grows well in sandy loam soil with good drainage. 
+            The fruit is sweet, juicy, and a good source of hydration. Watermelons are mainly grown in Karnataka, Tamil Nadu, and Uttar Pradesh. 
+            They help cool the body during hot weather.`,
+
+                muskmelon: `Muskmelon is another summer fruit rich in vitamins and water. It thrives in warm, sunny climates with well-drained soil. 
+            The fruit is sweet, aromatic, and eaten fresh or juiced. Cultivated mainly in Punjab, Uttar Pradesh, and Maharashtra. 
+            It is also known as cantaloupe in some regions.`,
+
+                apple: `Apples are temperate fruits grown in hilly regions. They are high in dietary fiber, antioxidants, and vitamin C. 
+            Apples require cold winters for proper dormancy and flowering. Himachal Pradesh and Jammu & Kashmir are major apple-producing states. 
+            They are eaten fresh or used in juices and desserts.`,
+
+                orange: `Oranges are citrus fruits rich in Vitamin C and antioxidants. They grow well in subtropical regions with moderate rainfall. 
+            Nagpur oranges are famous for their taste and quality. Used for juice, candy, and raw consumption. 
+            Grown widely in Maharashtra, Punjab, and Madhya Pradesh.`,
+
+                papaya: `Papaya is a fast-growing tropical fruit with digestive enzymes. It is eaten raw, juiced, or used in salads and curries. 
+            Papayas require warm temperatures and fertile soil. Major producers include Andhra Pradesh, Gujarat, and Karnataka. 
+            It is also beneficial for skin and immunity.`,
+
+                coconut: `Coconut trees are found abundantly in coastal regions. They provide fruit, oil, fiber, and water for consumption. 
+            Used in cooking, cosmetics, and religious ceremonies. Kerala, Tamil Nadu, and Karnataka are leading producers. 
+            The entire tree is economically useful and valued in Ayurveda.`,
+
+                cotton: `Cotton is a major cash crop used in the textile industry. It requires a long frost-free period and moderate rainfall. 
+            India is one of the top cotton-producing countries. Cultivated mainly in Gujarat, Maharashtra, and Telangana. 
+            Cotton fibers are used to make clothes and textiles.`,
+
+                jute: `Jute is a fiber crop known for its eco-friendly qualities. It is used to make sacks, bags, carpets, and ropes. 
+            Jute grows well in alluvial soil with plenty of water. West Bengal is the leading producer of jute in India. 
+            It is biodegradable and supports sustainable packaging.`,
+
+                coffee: `Coffee is grown in the hilly areas of South India. It requires shade, cool climate, and well-drained soil. 
+            Arabica and Robusta are the main varieties. Karnataka, Kerala, and Tamil Nadu are top coffee producers. 
+            Coffee is a major export commodity for India.`
+            };
+            
+            const grid = document.getElementById('grid-container');
+
+            for (let crop in crops) {
+                const div = document.createElement('div');
+                div.className = 'crop-card';
+                div.innerHTML = `
+                    <img src="/static/images/${crop}.png" alt="${crop}">
+                    <div>${crop.charAt(0).toUpperCase() + crop.slice(1)}</div>
+                `;
+                div.onclick = () => {
+                    document.getElementById('crop-name').innerText = crop.charAt(0).toUpperCase() + crop.slice(1);
+                    document.getElementById('crop-description').innerText = cropDescriptions[crop];
+                };
+                grid.appendChild(div);
+            }
+    </script>
+</body>
+</html>
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Know More About Indian Crops</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e8f5e9; /* Light green background */
+            color: #1b5e20; /* Dark green text */
+            text-align: center;
+        }
+
+        .header {
+            background: #a5d6a7; /* Medium green header */
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0; /* Remove default margin for header spacing */
+        }
+
+        #grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .crop-card {
+            background: #ffffff; /* White background for cards */
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 150px; /* Fixed height for consistency */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
+            border: 1px solid #a5d6a7; /* Light green border */
+            gap: 10px; /* Space between image and text */
+        }
+
+        .crop-card:hover {
+            transform: scale(1.05); /* Slight zoom on hover */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Enhanced shadow on hover */
+        }
+
+        .crop-card img {
+            width: 80px; /* Larger images */
+            height: 80px;
+            object-fit: contain;
+        }
+
+        #crop-info {
+            width: 100%;
+            min-height: 150px;
+            margin-top: 10px;
+            padding: 20px;
+            background: #ffffff; /* White background */
+            color: #1b5e20; /* Dark green text */
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
+            border: 1px solid #a5d6a7; /* Light green border */
+        }
+
+        .btn-home {
+            display: inline-block;
+            background-color: #4caf50; /* Green button */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            margin-top: 10px; /* Space from header title */
+        }
+
+        .btn-home:hover {
+            background-color: #388e3c; /* Darker green on hover */
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Know More About the Indian Crops</h1>
+        <a href="{{ url_for('home') }}" class="btn-home">Go Back to Home</a>
+    </div>
+    <div id="grid-container"></div>
+    <div id="crop-info">
+        <h2 id="crop-name">Click on a crop to learn more</h2>
+        <p id="crop-description"></p>
+    </div>
+
+    <script>
+        const crops = {
+            'rice': 1, 'maize': 2, 'chickpea': 3, 'kidneybeans': 4, 'pigeonpeas': 5,
+            'mothbeans': 6, 'mungbean': 7, 'blackgram': 8, 'lentil': 9,
+            'pomegranate': 10, 'banana': 11, 'mango': 12, 'grapes': 13,
+            'watermelon': 14, 'muskmelon': 15, 'apple': 16, 'orange': 17,
+            'papaya': 18, 'coconut': 19, 'cotton': 20, 'jute': 21, 'coffee': 22
+        };
+
+        const cropDescriptions = {
+            rice: `Rice is a staple food for more than half of India's population. It thrives in high rainfall regions with standing water. 
+            India is one of the largest producers and exporters of rice in the world. There are two major types: basmati and non-basmati. 
+            It is mainly grown in states like West Bengal, Punjab, and Uttar Pradesh.`,
+
+            maize: `Maize is a versatile crop used for food, fodder, and industrial purposes. It grows well in both kharif and rabi seasons. 
+            It is rich in carbohydrates and is also used for biofuel. Major maize-growing states include Karnataka, Madhya Pradesh, and Bihar. 
+            Maize is also processed into cornflakes and popcorn.`,
+
+            chickpea: `Chickpea, also known as gram, is a key rabi pulse crop in India. It is a rich source of protein and dietary fiber. 
+            It helps in enriching soil fertility through nitrogen fixation. Chickpea is primarily grown in Madhya Pradesh, Rajasthan, and Maharashtra. 
+            It is used in dishes like chole and is ground into besan (gram flour).`,
+
+            kidneybeans: `Kidney beans, commonly called rajma, are popular in North Indian cuisine. They are rich in protein, iron, and dietary fiber. 
+            Kidney beans require well-drained loamy soil for optimal growth. They are mainly cultivated in Jammu & Kashmir, Himachal Pradesh, and Uttarakhand. 
+            Rajma chawal is a staple dish made with these beans.`,
+
+            pigeonpeas: `Pigeon peas, or arhar/tur dal, are a vital pulse crop in India. They are drought-tolerant and can grow in semi-arid conditions. 
+            They are a major source of protein in vegetarian diets. Used in everyday meals as dal, especially in southern and central India. 
+            Maharashtra, Uttar Pradesh, and Karnataka are key producers.`,
+
+            mothbeans: `Moth beans are hardy, drought-resistant crops grown in arid regions. They are rich in protein and consumed as whole or split dals. 
+            Moth beans require minimal water and grow in sandy soil. Rajasthan is the major producer of this crop in India. 
+            It is also used in preparing snacks like matki usal.`,
+
+            mungbean: `Mungbean, or green gram, is a highly nutritious pulse. It is quick-growing and often used in crop rotation systems. 
+            It is a great source of plant-based protein and antioxidants. Mungbean sprouts are consumed raw in salads or cooked. 
+            It is grown mostly in Maharashtra, Andhra Pradesh, and Rajasthan.`,
+
+            blackgram: `Black gram, also known as urad dal, is a key legume in India. It is used in making popular dishes like idli and dosa batter. 
+            This crop improves soil health through nitrogen fixation. It is commonly cultivated in Tamil Nadu, Andhra Pradesh, and Maharashtra. 
+            Black gram is rich in protein and iron.`,
+
+            lentil: `Lentils are important winter pulse crops grown in northern India. They are rich in iron, fiber, and protein, making them nutritious. 
+            Lentils grow best in cool, temperate climates with dry weather. Used in a variety of Indian dals and soups. 
+            Major producing states include Madhya Pradesh and Uttar Pradesh.`,
+
+            pomegranate: `Pomegranate is a drought-resistant fruit rich in antioxidants. It grows best in semi-arid and arid regions. 
+            The fruit is consumed fresh or as juice and is exported globally. Maharashtra is the leading producer of pomegranate in India. 
+            It helps in improving heart health and immunity.`,
+
+            banana: `Bananas are tropical fruits available throughout the year in India. They are rich in potassium, vitamin B6, and fiber. 
+            Banana plants require warm, humid climates and rich soil. Tamil Nadu, Maharashtra, and Kerala are top banana-growing states. 
+            The fruit is consumed raw or used in cooking and desserts.`,
+
+            mango: `Mango, the national fruit of India, is loved for its sweetness. It grows in tropical regions and requires a hot, dry season to flower. 
+            There are many varieties like Alphonso, Dasheri, and Kesar. Uttar Pradesh, Maharashtra, and Andhra Pradesh are top producers. 
+            Mangoes are eaten raw, pickled, or juiced.`,
+
+            grapes: `Grapes are cultivated mainly in Maharashtra and Karnataka. They are grown on vines and need moderate temperatures. 
+            Used for fresh eating, raisin making, and wine production. India is a major exporter of fresh table grapes. 
+            Grapes are rich in antioxidants and support heart health.`,
+
+            watermelon: `Watermelon is a summer fruit known for its high water content. It grows well in sandy loam soil with good drainage. 
+            The fruit is sweet, juicy, and a good source of hydration. Watermelons are mainly grown in Karnataka, Tamil Nadu, and Uttar Pradesh. 
+            They help cool the body during hot weather.`,
+
+            muskmelon: `Muskmelon is another summer fruit rich in vitamins and water. It thrives in warm, sunny climates with well-drained soil. 
+            The fruit is sweet, aromatic, and eaten fresh or juiced. Cultivated mainly in Punjab, Uttar Pradesh, and Maharashtra. 
+            It is also known as cantaloupe in some regions.`,
+
+            apple: `Apples are temperate fruits grown in hilly regions. They are high in dietary fiber, antioxidants, and vitamin C. 
+            Apples require cold winters for proper dormancy and flowering. Himachal Pradesh and Jammu & Kashmir are major apple-producing states. 
+            They are eaten fresh or used in juices and desserts.`,
+
+            orange: `Oranges are citrus fruits rich in Vitamin C and antioxidants. They grow well in subtropical regions with moderate rainfall. 
+            Nagpur oranges are famous for their taste and quality. Used for juice, candy, and raw consumption. 
+            Grown widely in Maharashtra, Punjab, and Madhya Pradesh.`,
+
+            papaya: `Papaya is a fast-growing tropical fruit with digestive enzymes. It is eaten raw, juiced, or used in salads and curries. 
+            Papayas require warm temperatures and fertile soil. Major producers include Andhra Pradesh, Gujarat, and Karnataka. 
+            It is also beneficial for skin and immunity.`,
+
+            coconut: `Coconut trees are found abundantly in coastal regions. They provide fruit, oil, fiber, and water for consumption. 
+            Used in cooking, cosmetics, and religious ceremonies. Kerala, Tamil Nadu, and Karnataka are leading producers. 
+            The entire tree is economically useful and valued in Ayurveda.`,
+
+            cotton: `Cotton is a major cash crop used in the textile industry. It requires a long frost-free period and moderate rainfall. 
+            India is one of the top cotton-producing countries. Cultivated mainly in Gujarat, Maharashtra, and Telangana. 
+            Cotton fibers are used to make clothes and textiles.`,
+
+            jute: `Jute is a fiber crop known for its eco-friendly qualities. It is used to make sacks, bags, carpets, and ropes. 
+            Jute grows well in alluvial soil with plenty of water. West Bengal is the leading producer of jute in India. 
+            It is biodegradable and supports sustainable packaging.`,
+
+            coffee: `Coffee is grown in the hilly areas of South India. It requires shade, cool climate, and well-drained soil. 
+            Arabica and Robusta are the main varieties. Karnataka, Kerala, and Tamil Nadu are top coffee producers. 
+            Coffee is a major export commodity for India.`
+        };
+
+        const grid = document.getElementById('grid-container');
+
+        for (let crop in crops) {
+            const div = document.createElement('div');
+            div.className = 'crop-card';
+            div.innerHTML = `
+                <img src="/static/images/${crop}.png" alt="${crop}">
+                <div>${crop.charAt(0).toUpperCase() + crop.slice(1)}</div>
+            `;
+            div.onclick = () => {
+                document.getElementById('crop-name').innerText = crop.charAt(0).toUpperCase() + crop.slice(1);
+                document.getElementById('crop-description').innerText = cropDescriptions[crop];
+            };
+            grid.appendChild(div);
+        }
+    </script>
+</body>
+</html> -->

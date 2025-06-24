@@ -1,25 +1,48 @@
-# Ignore virtual environment
-venv/
+# 💻 Python
+__pycache__/
+*.py[cod]
+*.so
 
-# Ignore all model files
+# 🧪 Virtual Environments
+venv/
+ENV/
+env/
+.venv/
+
+# 📦 Package distributions
+*.egg
+*.egg-info/
+dist/
+build/
+
+# 🧠 Machine Learning models
 models/*.h5
 models/*.pkl
+*.h5
+*.pkl
 
-# Ignore datasets
+# 📊 Datasets
 datasets/
+data/
+*.csv
+*.xlsx
+*.zip
 
-# Ignore Jupyter checkpoints
+# 🔍 Checkpoints and logs
 **/.ipynb_checkpoints/
-
-# Ignore __pycache__ folders
-__pycache__/
-**/__pycache__/
-
-# Ignore uploads (user uploads or predictions)
-uploads/
-
-# Ignore other binary/log files
 *.log
-*.dll
-*.pyd
-*.exe
+
+# 📸 Uploads or user images
+uploads/
+media/
+
+# 🐘 OS/System files
+.DS_Store
+Thumbs.db
+
+# 🌐 IDE/Editor settings
+.vscode/
+.idea/
+
+# 📄 Environment variables
+.env

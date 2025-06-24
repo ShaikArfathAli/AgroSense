@@ -1,1 +1,25 @@
-/datasets
+# Ignore virtual environment
+venv/
+
+# Ignore all model files
+models/*.h5
+models/*.pkl
+
+# Ignore datasets
+datasets/
+
+# Ignore Jupyter checkpoints
+**/.ipynb_checkpoints/
+
+# Ignore __pycache__ folders
+__pycache__/
+**/__pycache__/
+
+# Ignore uploads (user uploads or predictions)
+uploads/
+
+# Ignore other binary/log files
+*.log
+*.dll
+*.pyd
+*.exe
